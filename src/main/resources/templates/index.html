@@ -3,8 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Spring Notes</title>
     <script th:src="@{/webjars/jquery/dist/jquery.min.js}"></script>
+    <link
+      rel="stylesheet"
+      th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.min.css}"
+    />
     <link
       rel="stylesheet"
       th:href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}"
@@ -12,14 +16,52 @@
     <script th:src="@{/webjars/bootstrap/dist/js/bootstrap.min.js}"></script>
   </head>
   <body>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="button"
-      aria-pressed="false"
-      autocomplete="off"
-    >
-      Click Me
-    </button>
+    <div class="container">
+      <h1 class="fw-bold">Your list note</h1>
+      <div class="row row-cols-4 g-3">
+        <div class="col" th:each="note : ${notes}">
+          <div class="border rounded-2 p-3">
+            <div class="row">
+              <div class="col offset-9">
+                <button class="btn btn-danger">
+                  <span>
+                    <i class="bi bi-x"></i>
+                  </span>
+                </button>
+              </div>
+            </div>
+            <p th:text="${note.name}"></p>
+            <div class="mb-3">
+              <label for="createdDate" class="form-label">Created Date</label>
+              <input
+                type="text"
+                class="form-control"
+                name="createdDate"
+                aria-describedby="helpId"
+                th:value="${#dates.format(note.createdDate, 'dd-MMM-yyyy HH:mm')}"
+                readonly
+                disabled
+              />
+            </div>
+            <div class="mb-3">
+              <label for="description" class="form-label">Description</label>
+              <textarea
+                class="form-control"
+                name="description"
+                th:text="${note.description}"
+                disabled
+                readonly
+                style="resize: none"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p th:text="${#error != null ? '' : #error}"></p>
+      <p th:text="${#status != null ? '' : #status}" class=""></p>
+      <div class="sticky-bottom bg-white">
+        <a class="btn btn-primary" th:href="@{/add}" role="button">Add Note</a>
+      </div>
+    </div>
   </body>
 </html>

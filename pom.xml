@@ -80,13 +80,6 @@
 			<scope>test</scope>
 		</dependency>
 
-		<!-- jQuery -->
-		<dependency>
-			<groupId>org.webjars.npm</groupId>
-			<artifactId>jquery</artifactId>
-			<version>3.7.1</version>
-		</dependency>
-
 		<!-- !IMPORTANT -->
 		<!-- Webjars Locator -->
 		<dependency>
@@ -95,11 +88,32 @@
 			<version>0.48</version>
 		</dependency>
 
+		<!-- jQuery -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.7.1</version>
+		</dependency>
+
 		<!-- Bootstrap -->
 		<dependency>
 			<groupId>org.webjars.npm</groupId>
 			<artifactId>bootstrap</artifactId>
 			<version>5.3.2</version>
+		</dependency>
+
+		<!-- Moment -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>moment</artifactId>
+			<version>2.29.4</version>
+		</dependency>
+
+		<!-- Bootstrap Icons -->
+		<dependency>
+			<groupId>org.webjars.npm</groupId>
+			<artifactId>bootstrap-icons</artifactId>
+			<version>1.11.1</version>
 		</dependency>
 
 	</dependencies>
