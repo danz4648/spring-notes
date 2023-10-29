@@ -43,7 +43,7 @@ public class AppConfig implements WebMvcConfigurer {
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic(withDefaults())
+                .httpBasic(withDefaults()).formLogin(withDefaults())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
