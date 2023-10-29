@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Note</title>
+    <link
+      rel="stylesheet"
+      th:href="@{/webjars/bootstrap/dist/css/bootstrap.min.css}"
+    />
+    <link
+      rel="stylesheet"
+      th:href="@{/webjars/bootstrap-icons/font/bootstrap-icons.min.css}"
+    />
+    <script th:src="@{/webjars/bootstrap/dist/js/bootstrap.min.js}"></script>
+  </head>
+  <body>
+    <div class="container">
+      <a class="btn" th:href="@{/}" role="button">
+        <span>
+          <i class="bi bi-arrow-left"></i>
+        </span>
+        Back</a
+      >
+      <form
+        action="#"
+        th:action="@{/add}"
+        method="post"
+        th:object="${note_form}"
+      >
+        <div class="mb-3">
+          <label for="title" class="form-label">Title</label>
+          <input
+            type="text"
+            class="form-control"
+            name="name"
+            th:value="${name}"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea
+            type="text"
+            class="form-control"
+            name="description"
+            th:value="${description}"
+          ></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Add Note</button>
+        <button type="reset" class="btn btn-danger">Reset</button>
+      </form>
+    </div>
+  </body>
+</html>
