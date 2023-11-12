@@ -1,6 +1,8 @@
 package com.danz.springnotes.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +25,8 @@ public class NoteController {
 
     // Mapping for frontend
     @GetMapping("/")
-    public ModelAndView indexPage(ModelMap model) {
-        model.put("notes", noteService.getNotes());
+    public ModelAndView indexPage(ModelMap model, @AuthenticationPrincipal User user) {
+        model.put("notes", noteService.getNotes(user.getUsername()));
         return new ModelAndView("index.html", model);
     }
 
@@ -34,11 +36,12 @@ public class NoteController {
     }
 
     @PostMapping("/add")
-    public ModelAndView addPage(@ModelAttribute(name = "note_form") NoteForm form, ModelMap model) {
+    public ModelAndView addPage(@ModelAttribute(name = "note_form") NoteForm form, ModelMap model,
+            @AuthenticationPrincipal User user) {
         NoteDto dto = new NoteDto();
         dto.setName(form.getName());
         dto.setDescription(form.getDescription());
-        if (noteService.saveNote(dto)) {
+        if (noteService.saveNote(dto, user.getUsername())) {
             log.info(form.toString());
             model.put("status", "Success add data");
             return new ModelAndView("redirect:/");

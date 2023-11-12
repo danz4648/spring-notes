@@ -18,23 +18,27 @@ public class NoteServiceImpl implements NoteService<NoteDto> {
     private NoteDao noteDao;
 
     @Override
-    public List<NoteDto> getNotes() {
-        return StreamSupport.stream(noteDao.findAll().spliterator(), false).map(data -> {
-            NoteDto dto = new NoteDto();
-            dto.setName(data.getName());
-            dto.setId(data.getUid());
-            dto.setDescription(data.getDescription());
-            dto.setCreatedDate(Date.from(data.getCreatedDate()));
-            dto.setLastModDate(Date.from(data.getModifiedDate()));
-            return dto;
-        }).toList();
+    public List<NoteDto> getNotes(String userid) {
+        return StreamSupport.stream(noteDao.findByUserid(userid).spliterator(), false)
+                .map(data -> {
+                    NoteDto dto = new NoteDto();
+                    dto.setName(data.getName());
+                    dto.setId(data.getUid());
+                    dto.setDescription(data.getDescription());
+                    dto.setCreatedDate(Date.from(data.getCreatedDate()));
+                    dto.setLastModDate(Date.from(data.getModifiedDate()));
+                    return dto;
+                }).toList();
     }
 
     @Override
-    public boolean saveNote(NoteDto note) {
+    public boolean saveNote(NoteDto note, String userid) {
+
         Note model = new Note();
+        model.setUserid(userid);
         model.setName(note.getName());
         model.setDescription(note.getDescription());
+
         return noteDao.save(model) != null;
     }
 
