@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -49,6 +50,12 @@ public class NoteController {
             model.put("error", "Failed to save Note");
             return new ModelAndView("index.html", model);
         }
+    }
+
+    @GetMapping("/delete/{id}")
+    public ModelAndView deleteNote(@PathVariable(value = "id") String noteid) {
+        noteService.deleteNote(noteid);
+        return new ModelAndView("redirect:/");
     }
 
 }

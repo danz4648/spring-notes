@@ -5,11 +5,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Data;
-import lombok.Setter;
 
 @Entity
 @Table(name = "user_notes")
@@ -17,8 +16,7 @@ import lombok.Setter;
 public class UserNotes {
 
     @Id
-    @GeneratedValue
-    @Setter(AccessLevel.NONE)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "user_id", nullable = false)
     private String uid;
 
