@@ -5,7 +5,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,6 +18,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebMvc
+@EnableWebSecurity
 public class AppConfig implements WebMvcConfigurer {
 
     private static final String[] CLASSPATH_RESOURCE_LOCATIONS = {
@@ -43,16 +44,15 @@ public class AppConfig implements WebMvcConfigurer {
         http.csrf(csrf -> csrf.disable()).authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic(withDefaults()).formLogin(withDefaults())
-                .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+                .httpBasic(withDefaults()).formLogin(withDefaults()).userDetailsService(userDetailsService());
         return http.build();
     }
 
     @Bean
-    UserDetailsService userDetailsService(BCryptPasswordEncoder passwordEncoder) {
+    UserDetailsService userDetailsService() {
         InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
         manager.createUser(
-                User.withUsername("admin").password(passwordEncoder.encode("admin123")).roles("ADMIN").build());
+                User.withUsername("admin").password(passwordEncoder().encode("admin123")).roles("ADMIN").build());
         return manager;
     }
 }

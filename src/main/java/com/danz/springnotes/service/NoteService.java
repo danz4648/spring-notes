@@ -3,7 +3,7 @@ package com.danz.springnotes.service;
 import java.util.List;
 
 public interface NoteService<T> {
-    public List<T> getNotes();
+    public List<T> getNotes(String userid);
 
-    public boolean saveNote(T note);
+    public boolean saveNote(T note, String userid);
 }
