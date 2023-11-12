@@ -17,13 +17,34 @@
   </head>
   <body>
     <div class="container">
-      <h1 class="fw-bold">Your list note</h1>
+      <h1 class="fw-bold">My Todos</h1>
+      <small>List of your current todos</small>
+      <hr />
+      <div class="row">
+        <div class="col-auto ms-auto">
+          <button type="button" class="btn btn-outline-secondary">
+            <span>
+              <i class="bi bi-filter"></i>
+            </span>
+          </button>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-outline-secondary">
+            <span>
+              <i class="bi bi-sort-alpha-down"></i>
+            </span>
+          </button>
+        </div>
+      </div>
       <div class="row row-cols-4 g-3">
         <div class="col" th:each="note : ${notes}">
           <div class="border rounded-2 p-3">
             <div class="row">
               <div class="col offset-9">
-                <button class="btn btn-danger">
+                <button
+                  class="btn btn-danger"
+                  th:attr="onclick=|deleteNote('${note.id}')|"
+                >
                   <span>
                     <i class="bi bi-x"></i>
                   </span>
@@ -63,5 +84,16 @@
         <a class="btn btn-primary" th:href="@{/add}" role="button">Add Note</a>
       </div>
     </div>
+    <script>
+      function deleteNote(id) {
+        jQuery.ajax({
+          method: "GET",
+          url: "/delete/" + id,
+          success: function () {
+            window.location.reload();
+          },
+        });
+      }
+    </script>
   </body>
 </html>

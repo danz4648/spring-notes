@@ -42,4 +42,10 @@ public class NoteServiceImpl implements NoteService<NoteDto> {
         return noteDao.save(model) != null;
     }
 
+    @Override
+    public boolean deleteNote(String noteid) {
+        noteDao.deleteById(noteid);
+        return true;
+    }
+
 }

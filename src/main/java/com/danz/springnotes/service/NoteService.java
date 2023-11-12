@@ -6,4 +6,6 @@ public interface NoteService<T> {
     public List<T> getNotes(String userid);
 
     public boolean saveNote(T note, String userid);
+
+    public boolean deleteNote(String noteid);
 }
