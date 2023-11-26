@@ -16,10 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.danz.springnotes.dto.NoteDto;
 import com.danz.springnotes.service.NoteService;
 
-import lombok.extern.slf4j.Slf4j;
-
 @Controller
-@Slf4j
 public class NoteController {
 
     @Autowired
@@ -39,11 +36,8 @@ public class NoteController {
 
     @PostMapping("/add")
     @ResponseBody
-    public ResponseEntity addPage(@RequestBody NoteDto form, @AuthenticationPrincipal User user) {
-        NoteDto dto = new NoteDto();
-        dto.setName(form.getName());
-        dto.setDescription(form.getDescription());
-        return ResponseEntity.ok(noteService.saveNote(dto, user.getUsername()));
+    public ResponseEntity addData(@RequestBody NoteDto form, @AuthenticationPrincipal User user) {
+        return ResponseEntity.ok(noteService.saveNote(form, user.getUsername()));
     }
 
     @GetMapping("/delete/{id}")

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class NoteDto {
-    private String id;
+    private String noteID;
     private String name;
     private String description;
     private Date lastModDate;

@@ -25,7 +25,7 @@ public class NoteServiceImpl implements NoteService<NoteDto> {
                 .map(data -> {
                     NoteDto dto = new NoteDto();
                     dto.setName(data.getName());
-                    dto.setId(data.getUid());
+                    dto.setNoteID(data.getNoteID());
                     dto.setDescription(data.getDescription());
                     dto.setCreatedDate(Date.from(data.getCreatedDate()));
                     dto.setLastModDate(Date.from(data.getModifiedDate()));
@@ -35,10 +35,9 @@ public class NoteServiceImpl implements NoteService<NoteDto> {
 
     @Override
     public boolean saveNote(NoteDto note, String userid) {
-        Optional<Note> findById = noteDao.findById(note.getId());
+        Optional<Note> findById = noteDao.findById(note.getNoteID());
 
         if (findById.isPresent()) {
-            System.out.println("PRESENT");
             Note data = findById.get();
             data.setUserid(userid);
             data.setName(note.getName());
@@ -46,7 +45,7 @@ public class NoteServiceImpl implements NoteService<NoteDto> {
             return noteDao.save(data) != null;
         } else {
             Note model = new Note();
-            model.setUid(UUID.fromString(model.getName()).toString());
+            model.setNoteID(UUID.fromString(model.getName()).toString());
             model.setUserid(userid);
             model.setName(note.getName());
             model.setDescription(note.getDescription());
