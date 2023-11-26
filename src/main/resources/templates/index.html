@@ -37,10 +37,18 @@
         </div>
       </div>
       <div class="row row-cols-4 g-3">
-        <div class="col" th:each="note : ${notes}">
+        <div class="col" th:each="note : ${notes}" th:id="'note-' + ${note.id}">
           <div class="border rounded-2 p-3">
             <div class="row">
-              <div class="col offset-9">
+              <div class="btn-group" role="group">
+                <button
+                  class="btn btn-primary"
+                  th:attr="onclick=|updateTodo('${note.id}')|"
+                >
+                  <span>
+                    <i class="bi bi-pencil"></i>
+                  </span>
+                </button>
                 <button
                   class="btn btn-danger"
                   th:attr="onclick=|deleteNote('${note.id}')|"
@@ -75,6 +83,12 @@
                 style="resize: none"
               ></textarea>
             </div>
+            <button
+              class="btn btn-primary"
+              th:attr="onclick=|saveUpdateTodo('${note.id}')|"
+            >
+              Save
+            </button>
           </div>
         </div>
       </div>
@@ -89,6 +103,39 @@
         jQuery.ajax({
           method: "GET",
           url: "/delete/" + id,
+          success: function () {
+            window.location.reload();
+          },
+        });
+      }
+
+      function updateTodo(id) {
+        // $("#note-" + id)
+        //   .find("input")
+        //   .prop("disabled", false);
+        $("#note-" + id)
+          .find("textarea")
+          .prop("disabled", false);
+        $("#note-" + id)
+          .find("textarea")
+          .prop("readonly", false);
+      }
+
+      function saveUpdateTodo(id) {
+        const data = {
+          id: id,
+          description: $("#note-" + id)
+            .find("textarea")
+            .val(),
+        };
+
+        jQuery.ajax({
+          method: "POST",
+          data: JSON.stringify(data),
+          url: "/add",
+          headers: {
+            "Content-Type": "application/json",
+          },
           success: function () {
             window.location.reload();
           },

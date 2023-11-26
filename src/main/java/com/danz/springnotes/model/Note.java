@@ -13,10 +13,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Table(name = "notes")
@@ -25,9 +23,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "note_id", nullable = false)
-    @Setter(AccessLevel.NONE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "note_id")
     private String uid;
 
     @Column(name = "user_id", nullable = false)
