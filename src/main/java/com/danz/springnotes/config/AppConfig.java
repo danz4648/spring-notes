@@ -43,7 +43,7 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests().requestMatchers("api/v1/register").permitAll()
+                .authorizeHttpRequests().requestMatchers("api/v1/register", "api/v1/reset").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic(withDefaults()).formLogin(withDefaults()).userDetailsService(userDetailsService);

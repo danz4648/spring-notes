@@ -1,11 +1,15 @@
 package com.danz.springnotes.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,6 +22,7 @@ import com.danz.springnotes.dao.UserDao;
 import com.danz.springnotes.model.Role;
 import com.danz.springnotes.model.UserNotes;
 import com.danz.springnotes.request.RegisterRequest;
+import com.danz.springnotes.request.ResetRequest;
 
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -63,6 +68,23 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         } else {
             return String.format("Username %s already exist", register.getUsername());
         }
+    }
 
+    public ResponseEntity<Map<String, Object>> resetPassword(ResetRequest resetRequest) {
+        Map<String, Object> msg;
+        Optional<UserNotes> username = userDao.findByUsername(resetRequest.getUsername());
+        if (username.isPresent()) {
+            msg = new HashMap<>();
+            UserNotes userNotes = username.get();
+            userNotes.setPassword(passwordEncoder.encode(resetRequest.getPassword()));
+            userDao.save(userNotes);
+
+            msg.put("detail", "Reset password is successfully");
+            return ResponseEntity.ok(msg);
+        } else {
+            msg = new HashMap<>();
+            msg.put("error", String.format("Username with '%s' is not found", resetRequest.getUsername()));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
+        }
     }
 }

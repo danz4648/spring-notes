@@ -17,6 +17,7 @@ public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleConflict(
             RuntimeException ex, WebRequest request) {
         logger.error(ex);
+        ex.printStackTrace();
         Map<String, Object> error = new HashMap<>();
         error.put("error", true);
         error.put("detail", ex.getMessage());
