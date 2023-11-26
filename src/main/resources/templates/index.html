@@ -37,29 +37,22 @@
         </div>
       </div>
       <div class="row row-cols-4 g-3">
-        <div class="col" th:each="note : ${notes}" th:id="'note-' + ${note.id}">
+        <div
+          class="col"
+          th:each="note : ${notes}"
+          th:id="'note-' + ${note.noteID}"
+        >
           <div class="border rounded-2 p-3">
-            <div class="row">
-              <div class="btn-group" role="group">
-                <button
-                  class="btn btn-primary"
-                  th:attr="onclick=|updateTodo('${note.id}')|"
-                >
-                  <span>
-                    <i class="bi bi-pencil"></i>
-                  </span>
-                </button>
-                <button
-                  class="btn btn-danger"
-                  th:attr="onclick=|deleteNote('${note.id}')|"
-                >
-                  <span>
-                    <i class="bi bi-x"></i>
-                  </span>
-                </button>
-              </div>
+            <div class="mb-3">
+              <label for="name" class="form-label">Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                th:value="${note.name}"
+                disabled
+              />
             </div>
-            <p th:text="${note.name}"></p>
             <div class="mb-3">
               <label for="createdDate" class="form-label">Created Date</label>
               <input
@@ -68,7 +61,6 @@
                 name="createdDate"
                 aria-describedby="helpId"
                 th:value="${#dates.format(note.createdDate, 'dd-MMM-yyyy HH:mm')}"
-                readonly
                 disabled
               />
             </div>
@@ -79,16 +71,40 @@
                 name="description"
                 th:text="${note.description}"
                 disabled
-                readonly
                 style="resize: none"
               ></textarea>
             </div>
-            <button
-              class="btn btn-primary"
-              th:attr="onclick=|saveUpdateTodo('${note.id}')|"
-            >
-              Save
-            </button>
+            <div class="row gap-2">
+              <div class="col-12">
+                <div class="btn-group w-100" role="group">
+                  <button
+                    class="btn btn-primary"
+                    th:attr="onclick=|updateTodo('${note.noteID}')|"
+                  >
+                    <span>
+                      <i class="bi bi-pencil"></i>
+                    </span>
+                  </button>
+                  <button
+                    class="btn btn-danger"
+                    th:attr="onclick=|deleteNote('${note.noteID}')|"
+                  >
+                    <span>
+                      <i class="bi bi-x"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+              <div class="col">
+                <button
+                  th:id="'note-' + ${note.noteID} + 'save-btn'"
+                  class="btn btn-primary w-100 d-none"
+                  th:attr="onclick=|saveUpdateTodo('${note.noteID}')|"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -98,7 +114,7 @@
         <a class="btn btn-primary" th:href="@{/add}" role="button">Add Note</a>
       </div>
     </div>
-    <script>
+    <script th:inline="javascript">
       function deleteNote(id) {
         jQuery.ajax({
           method: "GET",
@@ -110,20 +126,21 @@
       }
 
       function updateTodo(id) {
-        // $("#note-" + id)
-        //   .find("input")
-        //   .prop("disabled", false);
         $("#note-" + id)
-          .find("textarea")
+          .find("input[name='name']")
           .prop("disabled", false);
         $("#note-" + id)
           .find("textarea")
-          .prop("readonly", false);
+          .prop("disabled", false);
+        $("#" + "note-" + id + "save-btn").toggleClass("d-none");
       }
 
       function saveUpdateTodo(id) {
-        const data = {
-          id: id,
+        const body = {
+          noteID: id,
+          name: $("#note-" + id)
+            .find("input[name='name']")
+            .val(),
           description: $("#note-" + id)
             .find("textarea")
             .val(),
@@ -131,7 +148,7 @@
 
         jQuery.ajax({
           method: "POST",
-          data: JSON.stringify(data),
+          data: JSON.stringify(body),
           url: "/add",
           headers: {
             "Content-Type": "application/json",
